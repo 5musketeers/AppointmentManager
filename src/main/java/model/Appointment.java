@@ -95,4 +95,12 @@ public class Appointment implements Serializable {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

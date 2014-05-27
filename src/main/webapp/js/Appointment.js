@@ -4,9 +4,9 @@ var Appointment = function(data){
 	self.title = data['title'] || '';
 	self.start = data['start'] || '';
 	self.end = data['end'] || '';
-	self.owner = data['owner'] || '';
+	self.owner = data['owner'] || 'test';
 	self.isPrivate = data['isPrivate'] || false;
-	self.type = data['type'] || false;
+	self.type = data['type'] || 'testType';
 	
 	self.getHtml = function(template){
 		var templates = {
@@ -18,7 +18,7 @@ var Appointment = function(data){
 				<td>'+self.users+'</td>\
 			</tr>'
 		};
-		
+		console.log("Get template for ", self, " with template ", template, templates[template]);
 		return templates[template];
 	};
 	
@@ -30,22 +30,22 @@ var Appointment = function(data){
 		obj.end = self.end;
 		obj.owner = self.owner;
 		obj.isPrivate = self.isPrivate;
-		//obj.type = self.type;
+		obj.type = self.type;
 		
 		return obj;
 	};
 	
-	self.save = function(){
+	self.save = function(successCB){
 		//New Appointment
 		//if(self.id > 0){
-		console.log(JSON.stringify(this.toObject()));
 			$.ajax({
 		        url: 'rest/appointments',
 		        contentType: "application/json",
 		        dataType: "json",
 		        type: "POST",
 		        data: JSON.stringify(self.toObject()),
-		        success: function(data) {
+		        success: successCB,
+		        /*function(data) {
 		        	console.log(data);
 		        	
 		            //clear input fields
@@ -53,7 +53,7 @@ var Appointment = function(data){
 
 		            //mark success on the registration form
 		            $('#formMsgs').append($('<span class="success">Appointment added</span>'));
-		        },
+		        },*/
 		        error: function(error) {
 		        	console.log(error);
 		            if ((error.status == 409) || (error.status == 400)) {
@@ -82,16 +82,19 @@ var Appointment = function(data){
 	};
 };
 
-Appointment.listAppointments = function(tableToAppand, template){
+Appointment.listAppointments = function(tableToAppend, template){
 	template = template || "row";
 	$.ajax({
         url: "rest/appointments",
         cache: false,
         success: function(data) {
-        	console.log(data);
+        	tableToAppend.children('tbody')
+				.html('');
         	for(var d in data){
-        		var app = new Appointment(d);
-        		tableToAppand.children('tbody').append(app.getHtml(template));
+        		var app = new Appointment(data[d]);
+        		console.log("Append Tempalte to", tableToAppend.children('tbody'));
+        		tableToAppend.children('tbody')
+        			.append(app.getHtml(template));
         	}
         },
         error: function(error) {

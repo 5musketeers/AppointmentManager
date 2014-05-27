@@ -4,13 +4,17 @@ $(document).ready(function(){
         pick12HourFormat: true
     });
 	
-	Appointment.listAppointments($('#listAppointments'));
+	Appointment.listAppointments($('#appointmentList'));
 	
-	$('#addAppointment').click(function(){
-		console.log($('#addAppointmentForm').serialize());
-		var app = new Appointment($('#addAppointmentForm').serialize());
+	$('#addAppointment').click(function(ev){
+		ev.preventDefault();
+		console.log($('#addAppointmentForm').serializeObject());
+		var app = new Appointment($('#addAppointmentForm').serializeObject());
 		console.log(app);
-		app.save();
+		app.save(function(){
+			console.log('SAVED SUCCESSFULL');
+			Appointment.listAppointments($('#appointmentList'));			
+		});
 	});
 	/*$('#addAppointmentForm').submit(function(){
 		console.log($('#addAppointmentForm').serialize());
