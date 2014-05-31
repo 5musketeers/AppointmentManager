@@ -36,11 +36,30 @@ public class AppointmentRegistration {
     private EntityManager em;
 
     @Inject
-    private Event<Appointment> memberEventSrc;
+    private Event<Appointment> appEventSrc;
 
-    public void register(Appointment appointment) throws Exception {
-        log.info("Registering " + appointment.getTitle());
-        em.persist(appointment);
-        memberEventSrc.fire(appointment);
+    public void register(Appointment app) throws Exception {
+        log.info("Registering " + app.getTitle());
+        //Appointment old = em.find(Appointment.class, app.getId());
+        //old.setTitle(app.getTitle());
+        //em.merge(old);
+        em.persist(app);
+        appEventSrc.fire(app);
+    }
+
+    public void edit(Appointment app) throws Exception {
+        log.info("Editiere " + app.getTitle());
+        Appointment old = em.find(Appointment.class, app.getId());
+        old.setTitle(app.getTitle());
+        em.merge(old);
+        //appEventSrc.fire(old);
+        
+        //this.remove(app.getId());
+        //this.register(app);
+    }
+    
+    public void remove(long id) throws Exception {
+        log.info("Loesche " + id);
+        em.remove(em.find(Appointment.class, id));
     }
 }

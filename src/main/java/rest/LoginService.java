@@ -53,10 +53,10 @@ import data.AppointmentRepository;
  * <p/>
  * This class produces a RESTful service to read/write the contents of the members table.
  */
-@Path("/appointments")
+@Path("/login")
 @RequestScoped
 @Stateful
-public class AppointmentServices {
+public class LoginService {
     @Inject
     private Logger log;
 
@@ -69,10 +69,10 @@ public class AppointmentServices {
     @Inject
     AppointmentRegistration registration;
 
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Appointment> listAll() {
-        return repository.findAllOrderedByName();
+    public boolean checkLogin() {
+        return true;
     }
 
     @GET
@@ -85,50 +85,22 @@ public class AppointmentServices {
         }
         return appointment;
     }
-    
-    @POST
-    @Path("/remove/{id:[0-9][0-9]*}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response removeAppointmentById(@PathParam("id") long id, Appointment app) {
-    	Response.ResponseBuilder builder = null;
 
-        try {
-            // Create an "ok" response
-        	registration.remove(id);
-            builder = Response.ok().entity(app);
-        } catch (Exception e) {
-            // Handle generic exceptions
-            Map<String, String> responseObj = new HashMap<String, String>();
-            responseObj.put("error", e.getMessage());
-            builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
-        }
-
-        return builder.build();
-    }
-    
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAppointment(Appointment app) {
+    public Response createAppointment(Appointment member) {
 
         Response.ResponseBuilder builder = null;
 
         try {
             // Validates member using bean validation
-            validateAppointment(app);
-            
-            log.info("CheckId " + app.getId());
-            if(app.getId() == null || app.getId() == 0){    
-                log.info("=New");
-                registration.register(app);              	
-            }else{  
-                log.info("=Edit");
-                registration.edit(app);      	
-            }
+            validateAppointment(member);
+
+            registration.register(member);
 
             // Create an "ok" response
-            builder = Response.ok().entity(app);
+            builder = Response.ok().entity(member);
         } catch (ConstraintViolationException ce) {
             // Handle bean validation issues
             builder = createViolationResponse(ce.getConstraintViolations());

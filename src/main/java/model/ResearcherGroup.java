@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -35,11 +34,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @XmlRootElement
 @Table(name = "Researcher_html5mobi", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class Researcher implements Serializable {
+public class ResearcherGroup implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue( strategy=GenerationType.AUTO) 
+    @GeneratedValue
     private Long id;
 
     @NotNull
@@ -51,11 +50,6 @@ public class Researcher implements Serializable {
     @NotEmpty
     @Email(message = "Invalid format")
     private String email;
-    
-    @NotNull
-    @NotEmpty
-    @Size(min = 6, max = 25, message = "6-25 letters and spaces")
-    private String password;
 
     public Long getId() {
         return id;
@@ -80,12 +74,4 @@ public class Researcher implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 }

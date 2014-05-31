@@ -1,27 +1,65 @@
 var Appointment = function(data){
+	data = data || {};
 	var self = this;
+	
+	/*
+	
 	self.id = data['id'] || false;
 	self.title = data['title'] || '';
 	self.start = data['start'] || '';
 	self.end = data['end'] || '';
 	self.owner = data['owner'] || 'test';
 	self.isPrivate = data['isPrivate'] || false;
-	self.type = data['type'] || 'testType';
+	self.type = data['type'] || 'testType';*/
 	
 	self.getHtml = function(template){
 		var templates = {
-			'row': '<tr>\
-				<td>'+self.title+'</td>\
-				<td>'+self.start+'</td>\
-				<td>'+self.end+'</td>\
-				<td>'+self.type+'</td>\
-				<td>'+self.users+'</td>\
-			</tr>'
+				'row': '<tr class="appointment" data-id="'+self.id+'">\
+					<td>'+self.title+'</td>\
+					<td>'+self.start+'</td>\
+					<td>'+self.end+'</td>\
+					<td>'+self.type+'</td>\
+					<td>'+self.users+'</td>\
+					<td><input type="button" class="edit btn" value="Edit" /> <input type="button" class="delete btn btn-danger" value="Delete" /></td>\
+				</tr>',
+				'form': '<form name="reg" data-ajax="false" role="form" id="appointmentForm"  data-id="'+self.id+'">\
+				            <fieldset>\
+						        <legend>appointment options:</legend>\
+						        <div class="form-group">\
+						            <label for="title">Title:</label>\
+						            <input class="form-control" type="text" name="title" id="title" value="'+self.title+'" placeholder="Title" required autofocus/>\
+						        </div>\
+						        <div class="form-group">\
+						            <label for="start">Start Time:</label>\
+						            <div class="input-group date datetime">\
+						                <input class="form-control"  data-format="dd.MM.yyyy hh:mm" value="'+self.start+'" type="datetime" name="start" id="start" placeholder="Start Time" required/>\
+						            	<span class="input-group-addon">\
+						            		<span class="glyphicon glyphicon-calendar"></span>\
+						        		</span>\
+						       		</div>\
+						        </div>\
+						        <div class="form-group">\
+						            <label for="start">End Time:</label>\
+						            <div class="input-group date datetime">\
+						            	<input class="form-control" type="datetime" name="end" id="end" value="'+self.end+'" placeholder="End Time" required/>\
+						        		<span class="input-group-addon">\
+						            		<span class="glyphicon glyphicon-calendar"></span>\
+						        		</span>\
+						        	</div>\
+						        </div>\
+						        <div class="form-group">\
+						            <label for="isPrivate">Is Private ?:</label>\
+						            <input class="" type="checkbox" name="isPrivate" id="isPrivate"'+((self.isPrivate)?' checked':'')+' />\
+						        </div>\
+						        <div id="formMsgs"></div>\
+						    </fieldset>\
+						</form>'
 		};
 		console.log("Get template for ", self, " with template ", template, templates[template]);
+		
 		return templates[template];
 	};
-	
+
 	self.toObject = function(){
 		var obj = {};
 		if(self.id) obj.id = self.id;
@@ -35,52 +73,66 @@ var Appointment = function(data){
 		return obj;
 	};
 	
+	self.updateFrom = function(data){
+		
+		self.id = data['id'] || self.id || false;
+		self.title = data['title'] || self.title || '';
+		self.start = data['start'] || self.start || '';
+		self.end = data['end'] || self.end || '';
+		self.owner = data['owner'] || self.owner || 'test';
+		self.isPrivate = data['isPrivate'] || self.isPrivate || false;
+		self.type = data['type'] || self.type || 'testType';
+		
+		return self;
+	};
+
 	self.save = function(successCB){
 		//New Appointment
-		//if(self.id > 0){
+		$.ajax({
+	        url: 'rest/appointments',
+	        contentType: "application/json",
+	        dataType: "json",
+	        type: "POST",
+	        data: JSON.stringify(self.toObject()),
+	        success: successCB,
+	        error: function(error) {
+	        	console.log(error);
+	            if ((error.status == 409) || (error.status == 400)) {
+	                var errorMsg = $.parseJSON(error.responseText);
+
+	               $('.err').remove();
+	                $.each(errorMsg, function(index, val) {
+	                	var formEl = $('[name="' + index+'"]');
+	                	formEl
+	                		//.append('<span class="input-group-addon err"><span class="glyphicon glyphicon-remove form-control-feedback"></span></span>')
+	                		.parent().addClass('has-error');
+	                	$('<p class="invalid bg-danger err">' + val + '</p>').insertAfter(formEl.parent());
+	                });
+	            } else {
+	                //console.log("error - unknown server issue");
+	                $('#formMsgs').append($('<span class="invalid">Unknown server error</span>'));
+	            }
+	        }
+	    });
+	};
+	self.remove = function(successCB){
 			$.ajax({
-		        url: 'rest/appointments',
+		        url: 'rest/appointments/remove/'+self.id,
 		        contentType: "application/json",
 		        dataType: "json",
 		        type: "POST",
 		        data: JSON.stringify(self.toObject()),
 		        success: successCB,
-		        /*function(data) {
-		        	console.log(data);
-		        	
-		            //clear input fields
-		            $('#reg')[0].reset();
-
-		            //mark success on the registration form
-		            $('#formMsgs').append($('<span class="success">Appointment added</span>'));
-		        },*/
 		        error: function(error) {
 		        	console.log(error);
-		            if ((error.status == 409) || (error.status == 400)) {
-		                //console.log("Validation error registering user!");
-		            	//alert("error: "+error.responseText);
-		                var errorMsg = $.parseJSON(error.responseText);
-		                //var errorMsg = error.responseText;
-
-		               $('.err').remove();
-		                $.each(errorMsg, function(index, val) {
-		                	var formEl = $('[name="' + index+'"]');
-		                	formEl
-		                		//.append('<span class="input-group-addon err"><span class="glyphicon glyphicon-remove form-control-feedback"></span></span>')
-		                		.parent().addClass('has-error');
-		                	$('<p class="invalid bg-danger err">' + val + '</p>').insertAfter(formEl.parent());
-		                });
-		            } else {
-		                //console.log("error - unknown server issue");
-		                $('#formMsgs').append($('<span class="invalid">Unknown server error</span>'));
-		            }
+		        	alert('DeleteError:'+error);
 		        }
 		    });
-		//}else{ // Update Appointment
-			
-		//}
 	};
+	self.updateFrom(data);
 };
+Appointment.allAppointments = {};
+	
 
 Appointment.listAppointments = function(tableToAppend, template){
 	template = template || "row";
@@ -90,8 +142,10 @@ Appointment.listAppointments = function(tableToAppend, template){
         success: function(data) {
         	tableToAppend.children('tbody')
 				.html('');
+        	Appointment.allAppointments = {};
         	for(var d in data){
         		var app = new Appointment(data[d]);
+        		Appointment.allAppointments[app.id] = app;
         		console.log("Append Tempalte to", tableToAppend.children('tbody'));
         		tableToAppend.children('tbody')
         			.append(app.getHtml(template));

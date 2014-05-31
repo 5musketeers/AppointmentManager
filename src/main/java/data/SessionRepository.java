@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 
 import model.Appointment;
@@ -29,7 +28,7 @@ import model.Appointment;
 import java.util.List;
 
 @ApplicationScoped
-public class AppointmentRepository {
+public class SessionRepository {
 
     @Inject
     private EntityManager em;
@@ -37,13 +36,10 @@ public class AppointmentRepository {
     public Appointment findById(Long id) {
         return em.find(Appointment.class, id);
     }
-
-    public List<Appointment> findAllOrderedByName() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Appointment> criteria = cb.createQuery(Appointment.class);
-        Root<Appointment> appointment = criteria.from(Appointment.class);
-        criteria.select(appointment).orderBy(cb.asc(appointment.get("title")));
-        return em.createQuery(criteria).getResultList();
-    }
     
+    public Boolean checkExistence(String username, String password){
+    	
+    	
+    	return true;
+    }
 }
