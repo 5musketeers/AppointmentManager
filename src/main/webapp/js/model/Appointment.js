@@ -10,6 +10,7 @@ var Appointment = function(data){
 					<td>'+self.end+'</td>\
 					<td>'+self.type+'</td>\
 					<td>'+self.users+'</td>\
+					<td>'+self.location+'</td>\
 					<td><input type="button" class="edit btn" data-type="appointment" value="Edit" /> <input type="button" class="delete btn btn-danger" value="Delete" data-type="appointment" /></td>\
 				</tr>',
 				'form': '<form name="reg" data-ajax="false" role="form" id="appointmentForm"  data-id="'+self.id+'">\
@@ -19,6 +20,10 @@ var Appointment = function(data){
 						            <label for="title">Title:</label>\
 						            <input class="form-control" type="text" name="title" id="title" value="'+self.title+'" placeholder="Title" required autofocus/>\
 						        </div>\
+					            <div class="form-group">\
+						            <label for="location">Location:</label>\
+						            <input class="form-control" type="text" name="location" id="location" value="'+self.location+'" placeholder="Title" required />\
+					            </div>\
 						        <div class="form-group">\
 						            <label for="start">Start Time:</label>\
 						            <div class="input-group date datetime">\
@@ -59,6 +64,7 @@ var Appointment = function(data){
 		obj.owner = self.owner;
 		obj.isPrivate = self.isPrivate;
 		obj.type = self.type;
+		obj.location = self.location;
 		
 		return obj;
 	};
@@ -72,6 +78,7 @@ var Appointment = function(data){
 		self.owner = data['owner'] || self.owner || 'test';
 		self.isPrivate = data['isPrivate'] || self.isPrivate || false;
 		self.type = data['type'] || self.type || 'testType';
+		self.location = data['location'] || self.location || 'testLoc';
 		
 		return self;
 	};

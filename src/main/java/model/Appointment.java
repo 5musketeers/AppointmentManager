@@ -48,6 +48,10 @@ public class Appointment implements Serializable {
     @NotNull
     @NotEmpty
     private String type; 
+    
+    @NotNull
+    @NotEmpty
+    private String location; 
 
 	public Long getId() {
 		return id;
@@ -103,5 +107,13 @@ public class Appointment implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }
