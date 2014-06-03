@@ -15,11 +15,21 @@ var ResearcherGroup = function(data){
 						            <label for="name">Name:</label>\
 						            <input class="form-control" type="text" name="name" id="name" value="'+self.name+'" placeholder="Name" required autofocus/>\
 						        </div>\
+					            <div class="form-group">\
+						            <label for="name">Members:</label>\
+						            <select name="members" size="3" multiple>\
+						            	'+Researcher.getHtml('empty', 'option', function(researcher){
+						            		return {
+						            			selected: (typeof self.membersByIds[researcher.id] !== 'undefined')
+						            		};
+						            	})+'\
+						            </select>\
+					            </div>\
 						        <div id="formMsgs"></div>\
 						    </fieldset>\
 						</form>'
 		};
-		console.log("Get template for ", self, " with template ", template, templates[template]);
+		//console.log("Get template for ", self, " with template ", template, templates[template]);
 		
 		return templates[template];
 	};
@@ -28,6 +38,15 @@ var ResearcherGroup = function(data){
 		var obj = {};
 		if(self.id) obj.id = self.id;
 		obj.name = self.name;
+		obj.members = [];
+		console.log(self.members);
+		console.log(Researcher.allData);
+		for(var i in self.members){
+			var index = self.members[i];
+			obj.members.push(Researcher.allData[index].toObject());
+		}
+		console.log(obj);
+		
 		
 		return obj;
 	};
@@ -36,6 +55,13 @@ var ResearcherGroup = function(data){
 		if(data['password'] == '') data['password'] != self.password;		
 		self.id = data['id'] || self.id || false;
 		self.name = data['name'] || self.name || '';
+		self.members = data['members'] || self.members || [];
+		
+		self.membersByIds = {};
+		for(var i in self.members){
+			var id = self.members[i].id;
+			self.membersByIds[id] = self.members[i];
+		}
 		
 		return self;
 	};

@@ -2,13 +2,15 @@ var Researcher = function(data){
 	data = data || {};
 	var self = this;
 	
-	self.getHtml = function(template){
+	self.getHtml = function(template,data){
+		data = data || {};
 		var templates = {
 				'row': '<tr class="researcher" data-id="'+self.id+'">\
 					<td>'+self.name+'</td>\
 					<td>'+self.email+'</td>\
 					<td><input type="button" class="edit btn" value="Edit" data-type="researcher" /> <input type="button" class="delete btn btn-danger" value="Delete" data-type="researcher" /></td>\
 				</tr>',
+				'option': '<option value="'+self.id+'"'+((data.selected)?' selected="selected"':'')+'>'+self.name+'</option>',
 				'form': '<form name="reg" data-ajax="false" role="form" id="researcherForm"  data-id="'+self.id+'">\
 				            <fieldset>\
 						        <legend>appointment options:</legend>\
@@ -28,7 +30,7 @@ var Researcher = function(data){
 						    </fieldset>\
 						</form>'
 		};
-		console.log("Get template for ", self, " with template ", template, templates[template]);
+		//console.log("Get template for ", self, " with template ", template, templates[template]);
 		
 		return templates[template];
 	};
@@ -99,7 +101,21 @@ var Researcher = function(data){
 	self.updateFrom(data);
 };
 Researcher.allData = {};
+
+Researcher.getHtml = function(template,subTemplate, dataFilter){
+	dataFilter = dataFilter || function(){return {};};
+	var html = '';
+	for(var resId in Researcher.allData){
+		var researcher = Researcher.allData[resId];
+		html += researcher.getHtml(subTemplate, dataFilter(researcher));
+	}
+	var templates = {
+			'empty': html,
+			'select': '<select name="researcher">'+html+'</select>'
+	};
 	
+	return templates[template];
+};
 
 Researcher.list = function(tableToAppend, template){
 	template = template || "row";

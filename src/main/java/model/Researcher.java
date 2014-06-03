@@ -1,11 +1,20 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.MapKey;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -40,6 +49,9 @@ public class Researcher implements Serializable {
     @NotEmpty
     @Size(min = 6, max = 25, message = "6-25 letters and spaces")
     private String password;
+    
+    @ManyToMany(mappedBy = "members")
+    private Set<ResearcherGroup> groups = new HashSet<ResearcherGroup>();
 
     public Long getId() {
         return id;
