@@ -1,17 +1,7 @@
 var Appointment = function(data){
 	data = data || {};
 	var self = this;
-	
-	/*
-	
-	self.id = data['id'] || false;
-	self.title = data['title'] || '';
-	self.start = data['start'] || '';
-	self.end = data['end'] || '';
-	self.owner = data['owner'] || 'test';
-	self.isPrivate = data['isPrivate'] || false;
-	self.type = data['type'] || 'testType';*/
-	
+		
 	self.getHtml = function(template){
 		var templates = {
 				'row': '<tr class="appointment" data-id="'+self.id+'">\
@@ -20,7 +10,7 @@ var Appointment = function(data){
 					<td>'+self.end+'</td>\
 					<td>'+self.type+'</td>\
 					<td>'+self.users+'</td>\
-					<td><input type="button" class="edit btn" value="Edit" /> <input type="button" class="delete btn btn-danger" value="Delete" /></td>\
+					<td><input type="button" class="edit btn" data-type="appointment" value="Edit" /> <input type="button" class="delete btn btn-danger" value="Delete" data-type="appointment" /></td>\
 				</tr>',
 				'form': '<form name="reg" data-ajax="false" role="form" id="appointmentForm"  data-id="'+self.id+'">\
 				            <fieldset>\
@@ -131,10 +121,10 @@ var Appointment = function(data){
 	};
 	self.updateFrom(data);
 };
-Appointment.allAppointments = {};
+Appointment.allData = {};
 	
 
-Appointment.listAppointments = function(tableToAppend, template){
+Appointment.list = function(tableToAppend, template){
 	template = template || "row";
 	$.ajax({
         url: "rest/appointments",
@@ -142,10 +132,10 @@ Appointment.listAppointments = function(tableToAppend, template){
         success: function(data) {
         	tableToAppend.children('tbody')
 				.html('');
-        	Appointment.allAppointments = {};
+        	Appointment.allData = {};
         	for(var d in data){
         		var app = new Appointment(data[d]);
-        		Appointment.allAppointments[app.id] = app;
+        		Appointment.allData[app.id] = app;
         		console.log("Append Tempalte to", tableToAppend.children('tbody'));
         		tableToAppend.children('tbody')
         			.append(app.getHtml(template));

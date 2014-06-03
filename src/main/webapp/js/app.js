@@ -1,68 +1,73 @@
 $(document).ready(function() {
+	
+	//navigation
+	$('.navLink').click(function(){
+		$('.site').hide();
+		$('#cont-'+$(this).attr('id')).show();
+	});
+	
+	
+	
 	$('.datetime').datetimepicker({
 		language : 'en',
 		pick12HourFormat : true
 	});
 
-	Appointment.listAppointments($('#appointmentList'));
+	Appointment.list($('#appointmentList'));
+	Researcher.list($('#researcherList'));
+	ResearcherGroup.list($('#researchergroupList'));
 
 	$(document).on('click', '.delete', function() {
-		var appointment;
-		var appId = $(this).parents('.appointment:first').data('id');
+		var className = $(this).data('type');
+		var classInst = window[ucfirst(className)];
 		
-		appointment = Appointment.allAppointments[appId];
-		appointment.remove(function(){
-			Appointment.listAppointments($('#appointmentList'));			
+		var data;
+		var dataId = $(this).parents('.'+className+':first').data('id');
+		
+		data = classInst.allData[dataId];
+		data.remove(function(){
+			classInst.list($('#'+className+'List'));
 		});
 	});
 	
 	$(document).on('click', '.edit,.new', function() {
-		var appointment;
-		var appId = $(this).parents('.appointment:first').data('id');
+		var className = $(this).data('type');
+		var classInst = window[ucfirst(className)];
 		
-		if(appId > 0){
-			appointment = Appointment.allAppointments[appId];
+		var data;
+		var dataId = $(this).parents('.'+className+':first').data('id');
+		
+		if(dataId > 0){
+			data = classInst.allData[dataId];
 		}else{
-			appointment = new Appointment({
+			data = new classInst({
 				title: 'default',
 				start: 'today',
 				end: 'tomorrow'
 			});			
 		}
 		
-		console.log(appointment);
-		
 		bootbox.dialog({
-			message : appointment.getHtml('form'),
-			title : "Appointment",
+			message : data.getHtml('form'),
+			title : ucfirst(className),
 			closeButton: true,
 			buttons : {
 				save : {
 					label : "Save",
 					className : "btn-success",
 					callback : function() {
-						var windows = $(this);
-						//$(this).find('form').submit();
-						//var app = new Appointment($('.bootbox.modal').find('form').serializeObject());
-						appointment.updateFrom($('.bootbox.modal').find('form').serializeObject());
-						appointment.save(function() {
+						data.updateFrom($('.bootbox.modal').find('form').serializeObject());
+						data.save(function() {
 							console.log('SAVED SUCCESSFULL');
-							Appointment.listAppointments($('#appointmentList'));
+							classInst.list($('#'+className+'List'));
 							bootbox.hideAll();
 						});
-						//appointment.save();
 						return false;
 					}
 				}
 			}
 		});
 	});
-	/*
-	 * $('#addAppointmentForm').submit(function(){
-	 * console.log($('#addAppointmentForm').serialize()); var app = new
-	 * Appointment($('#addAppointmentForm').serialize()); console.log(app);
-	 * app.save(); });
-	 */
 
 	$.fn.serializeObject = function() {
 		var o = {};
@@ -79,4 +84,10 @@ $(document).ready(function() {
 		});
 		return o;
 	};
+	function ucfirst(str) {
+		  str += '';
+		  var f = str.charAt(0)
+		    .toUpperCase();
+		  return f + str.substr(1);
+		}
 });

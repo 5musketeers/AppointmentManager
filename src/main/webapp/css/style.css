@@ -2,6 +2,9 @@
 	width: 600px;
 }
 
-.invalid{
-	
+.site{
+	display: none;
+}
+.site.default{
+	display: block;
 }

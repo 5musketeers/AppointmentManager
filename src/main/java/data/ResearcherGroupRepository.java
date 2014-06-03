@@ -23,26 +23,25 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import model.Appointment;
+import model.ResearcherGroup;
 
 import java.util.List;
 
 @ApplicationScoped
-public class AppointmentRepository {
+public class ResearcherGroupRepository {
 
     @Inject
     private EntityManager em;
 
-    public Appointment findById(Long id) {
-        return em.find(Appointment.class, id);
+    public ResearcherGroup findById(Long id) {
+        return em.find(ResearcherGroup.class, id);
     }
 
-    public List<Appointment> findAllOrderedByName() {
+    public List<ResearcherGroup> findAllOrderedByName() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Appointment> criteria = cb.createQuery(Appointment.class);
-        Root<Appointment> appointment = criteria.from(Appointment.class);
-        criteria.select(appointment).orderBy(cb.asc(appointment.get("title")));
+        CriteriaQuery<ResearcherGroup> criteria = cb.createQuery(ResearcherGroup.class);
+        Root<ResearcherGroup> res = criteria.from(ResearcherGroup.class);
+        criteria.select(res).orderBy(cb.asc(res.get("id")));
         return em.createQuery(criteria).getResultList();
-    }
-    
+    }    
 }

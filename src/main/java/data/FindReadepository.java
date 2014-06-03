@@ -16,33 +16,42 @@
  */
 package data;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import model.Appointment;
-
 import java.util.List;
+import java.util.logging.Logger;
 
-@ApplicationScoped
-public class AppointmentRepository {
+public class FindReadepository<T> {
+
+	private final Class<T> clazz;
+	
+    @Inject
+    private Logger log;
 
     @Inject
     private EntityManager em;
-
-    public Appointment findById(Long id) {
-        return em.find(Appointment.class, id);
+    
+    @Inject
+    private Event<T> appEventSrc;
+    
+    public FindReadepository(Class<T> clazz){
+    	this.clazz = clazz;
     }
 
-    public List<Appointment> findAllOrderedByName() {
+    public T findById(Long id) {
+        return em.find(clazz, id);
+    }
+
+    public List<T> read() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Appointment> criteria = cb.createQuery(Appointment.class);
-        Root<Appointment> appointment = criteria.from(Appointment.class);
-        criteria.select(appointment).orderBy(cb.asc(appointment.get("title")));
+        CriteriaQuery<T> criteria = cb.createQuery(clazz);
+        Root<T> appointment = criteria.from(clazz);
+        criteria.select(appointment).orderBy(cb.asc(appointment.get("id")));
         return em.createQuery(criteria).getResultList();
     }
-    
 }
