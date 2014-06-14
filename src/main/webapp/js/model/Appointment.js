@@ -3,6 +3,7 @@ var Appointment = function(data){
 	var self = this;
 		
 	self.getHtml = function(template){
+
 		var templates = {
 				'row': '<tr class="appointment" data-id="'+self.id+'">\
 					<td>'+self.title+'</td>\
@@ -27,7 +28,7 @@ var Appointment = function(data){
 						        <div class="form-group">\
 						            <label for="start">Start Time:</label>\
 						            <div class="input-group date datetime">\
-						                <input class="form-control"  data-format="dd.MM.yyyy hh:mm" value="'+self.start+'" type="datetime" name="start" id="start" placeholder="Start Time" required/>\
+						                <input class="form-control"  data-format="dd.MM.yyyy hh:mm" value="'+self.start+'" type="date" name="start" id="start" placeholder="Start Time" required/>\
 						            	<span class="input-group-addon">\
 						            		<span class="glyphicon glyphicon-calendar"></span>\
 						        		</span>\
@@ -36,7 +37,7 @@ var Appointment = function(data){
 						        <div class="form-group">\
 						            <label for="start">End Time:</label>\
 						            <div class="input-group date datetime">\
-						            	<input class="form-control" type="datetime" name="end" id="end" value="'+self.end+'" placeholder="End Time" required/>\
+						            	<input class="form-control"  data-format="dd.MM.yyyy hh:mm" value="'+self.end+'" type="date" name="end" id="end" placeholder="End Time" required/>\
 						        		<span class="input-group-addon">\
 						            		<span class="glyphicon glyphicon-calendar"></span>\
 						        		</span>\
@@ -74,7 +75,9 @@ var Appointment = function(data){
 		self.id = data['id'] || self.id || false;
 		self.title = data['title'] || self.title || '';
 		self.start = data['start'] || self.start || '';
+		if (self.start.length == 10) {self.start = (new Date(self.start*1000)).toDateString();}
 		self.end = data['end'] || self.end || '';
+		if (self.end.length == 10) {self.end = (new Date(self.end*1000)).toDateString();}
 		self.owner = data['owner'] || self.owner || 'test';
 		self.isPrivate = data['isPrivate'] || self.isPrivate || false;
 		self.type = data['type'] || self.type || 'testType';

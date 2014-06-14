@@ -26,6 +26,7 @@ import javax.persistence.criteria.Root;
 import model.Appointment;
 
 import java.util.List;
+import java.util.Calendar;
 
 @ApplicationScoped
 public class AppointmentRepository {

@@ -24,6 +24,7 @@ import javax.persistence.EntityManager;
 import model.Appointment;
 
 import java.util.logging.Logger;
+import java.util.Calendar;
 
 // The @Stateless annotation eliminates the need for manual transaction demarcation
 @Stateless
@@ -43,6 +44,14 @@ public class AppointmentRegistration {
         //Appointment old = em.find(Appointment.class, app.getId());
         //old.setTitle(app.getTitle());
         //em.merge(old);
+        String as = app.getStart();
+        Calendar cal = Calendar.getInstance();
+        cal.set(Integer.valueOf(as.split("/")[2].split(" ")[0]),Integer.valueOf(as.split("/")[0]),Integer.valueOf(as.split("/")[1]),Integer.valueOf(as.split(" ")[1].split(":")[0]),Integer.valueOf(as.split(" ")[1].split(":")[1]));
+        app.setStart(String.valueOf(cal.getTimeInMillis()/1000));
+        String ae = app.getEnd();
+        cal = Calendar.getInstance();
+        cal.set(Integer.valueOf(ae.split("/")[2].split(" ")[0]),Integer.valueOf(ae.split("/")[0]),Integer.valueOf(ae.split("/")[1]),Integer.valueOf(ae.split(" ")[1].split(":")[0]),Integer.valueOf(ae.split(" ")[1].split(":")[1]));
+        app.setEnd(String.valueOf(cal.getTimeInMillis()/1000));
         em.persist(app);
         appEventSrc.fire(app);
     }

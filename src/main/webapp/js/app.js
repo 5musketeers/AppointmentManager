@@ -8,10 +8,7 @@ $(document).ready(function() {
 	
 	
 	
-	$('.datetime').datetimepicker({
-		language : 'en',
-		pick12HourFormat : true
-	});
+	
 
 	Appointment.list($('#appointmentList'));
 	Researcher.list($('#researcherList'));
@@ -31,6 +28,7 @@ $(document).ready(function() {
 	});
 	
 	$(document).on('click', '.edit,.new', function() {
+		
 		var className = $(this).data('type');
 		var classInst = window[ucfirst(className)];
 		
@@ -41,11 +39,12 @@ $(document).ready(function() {
 			data = classInst.allData[dataId];
 		}else{
 			data = new classInst({
-				title: 'default',
-				start: 'today',
-				end: 'tomorrow'
+				title: 'defaultxy',
+				start: '06/14/2014 12:00 AM',
+				end: '06/14/2014 12:00 AM'
 			});			
 		}
+		
 		
 		bootbox.dialog({
 			message : data.getHtml('form'),
@@ -66,6 +65,11 @@ $(document).ready(function() {
 					}
 				}
 			}
+		});
+		
+		$('.datetime').datetimepicker({
+			language : 'en',
+			pick12HourFormat : true
 		});
 	});
 
