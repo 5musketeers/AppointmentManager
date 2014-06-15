@@ -21,3 +21,4 @@ INSERT INTO Appointment_html5mobi (`id`, `title`, `start`, `end`, `type`, `isPri
 INSERT INTO Researcher_html5mobi (`id`, `name`, `email`, `password`) VALUES ('1', 'Franz', 'test@test.de', 'test')
 INSERT INTO Researcher_html5mobi (`id`, `name`, `email`, `password`) VALUES ('2', 'Peter', 'test2@test.de', 'test')
 INSERT INTO ResearcherGroup_html5mobi (`id`, `name`) VALUES ('1', '5musketeers')
+INSERT INTO Project_html5mobi (`id`, `name`) VALUES ('1', 'The ultimate project')

@@ -13,6 +13,7 @@ $(document).ready(function() {
 	Appointment.list($('#appointmentList'));
 	Researcher.list($('#researcherList'));
 	ResearcherGroup.list($('#researchergroupList'));
+	Project.list($('#projectList'));
 
 	$(document).on('click', '.delete', function() {
 		var className = $(this).data('type');
