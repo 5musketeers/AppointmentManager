@@ -31,6 +31,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -76,7 +77,7 @@ public class ResearcherGroupServices {
     @GET
     @Path("/{id:[0-9][0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ResearcherGroup lookupAppointmentById(@PathParam("id") long id) {
+    public ResearcherGroup lookupById(@PathParam("id") long id) {
     	ResearcherGroup appointment = repository.findById(id);
         if (appointment == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -84,17 +85,17 @@ public class ResearcherGroupServices {
         return appointment;
     }
     
-    @POST
-    @Path("/remove/{id:[0-9][0-9]*}")
+    @DELETE
+    @Path("/{id:[0-9][0-9]*}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response removeAppointmentById(@PathParam("id") long id, ResearcherGroup app) {
+    public Response removeById(@PathParam("id") long id) {
     	Response.ResponseBuilder builder = null;
 
         try {
             // Create an "ok" response
         	registration.remove(id);
-            builder = Response.ok().entity(app);
+            builder = Response.ok();
         } catch (Exception e) {
             // Handle generic exceptions
             Map<String, String> responseObj = new HashMap<String, String>();
@@ -108,7 +109,7 @@ public class ResearcherGroupServices {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAppointment(ResearcherGroup app) {
+    public Response create(ResearcherGroup app) {
 
         Response.ResponseBuilder builder = null;
 

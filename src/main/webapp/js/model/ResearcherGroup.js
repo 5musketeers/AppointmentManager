@@ -97,10 +97,10 @@ var ResearcherGroup = function(data){
 	};
 	self.remove = function(successCB){
 			$.ajax({
-		        url: 'rest/researchergroup/remove/'+self.id,
+		        url: 'rest/researchergroup/'+self.id,
 		        contentType: "application/json",
 		        dataType: "json",
-		        type: "POST",
+		        type: "DELETE",
 		        data: JSON.stringify(self.toObject()),
 		        success: successCB,
 		        error: function(error) {
