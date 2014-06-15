@@ -117,10 +117,10 @@ var Appointment = function(data){
 	};
 	self.remove = function(successCB){
 			$.ajax({
-		        url: 'rest/appointments/remove/'+self.id,
+		        url: 'rest/appointments/'+self.id,
 		        contentType: "application/json",
 		        dataType: "json",
-		        type: "POST",
+		        type: "DELETE",
 		        data: JSON.stringify(self.toObject()),
 		        success: successCB,
 		        error: function(error) {

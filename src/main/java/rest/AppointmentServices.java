@@ -32,6 +32,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -42,9 +43,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import model.Appointment;
-
 import service.AppointmentRegistration;
-
 import data.AppointmentRepository;
 
 
@@ -76,7 +75,7 @@ public class AppointmentServices {
     }
 
     @GET
-    @Path("/{id:[0-9][0-9]*}")
+    @Path("/{id:[0-9]+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Appointment lookupAppointmentById(@PathParam("id") long id) {
     	 Appointment appointment = repository.findById(id);
@@ -86,17 +85,16 @@ public class AppointmentServices {
         return appointment;
     }
     
-    @POST
-    @Path("/remove/{id:[0-9][0-9]*}")
+    @DELETE
+    @Path("/{id:[0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeAppointmentById(@PathParam("id") long id, Appointment app) {
     	Response.ResponseBuilder builder = null;
 
         try {
-            // Create an "ok" response
         	registration.remove(id);
-            builder = Response.ok().entity(app);
+            builder = Response.noContent();
         } catch (Exception e) {
             // Handle generic exceptions
             Map<String, String> responseObj = new HashMap<String, String>();
