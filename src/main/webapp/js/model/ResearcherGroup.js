@@ -47,7 +47,7 @@ var ResearcherGroup = function(data){
 			// but some times it's the index and sometimes the object itself 
 			if (!isNaN(whatever)) {
 				obj.members.push(Researcher.allData[whatever].toObject());
-			} else if (typeof value !== "undefined") {
+			} else if (typeof whatever !== "undefined") {
 				obj.members.push(whatever.toObject());
 			}
 		}
