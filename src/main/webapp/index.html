@@ -19,13 +19,13 @@
 		</div>
 	</nav>
 	
-	<div id="app">
+	<div id="app" class="container">
 		
-		<div id="cont-appointments" class="site default">
-			<h1>Appointment overview</h1>
-			<div class="container">
-				<input type="button" class="btn btn-success new" value="add Appointment" data-type="appointment" >
-				<table id="appointmentList" class="table table-striped table-bordered table-hover">
+		<div id="cont-appointments" class="site default" style="display: block;">
+			<h1 class="col-md-9">Appointment overview</h1>
+			<div class="">
+				<div class="col-md-3 text-right h1"><input type="button" class="btn btn-success new" value="add Appointment" data-type="appointment"></div>
+				<div class="col-md-12"><table id="appointmentList" class="table table-striped table-hover">
 					<thead>
 						<tr>
 							<th>title</th>
@@ -40,15 +40,15 @@
 					<tbody>
 					
 					</tbody>
-				</table>
+				</table></div>
 			</div>
 		</div>
 		
-		<div id="cont-researcher" class="site">
-			<h1>Researcher overview</h1>
-			<div class="container">
-				<input type="button" class="btn btn-success new" value="add Researcher"  data-type="researcher" >
-				<table id="researcherList" class="table table-striped table-bordered table-hover">
+		<div id="cont-researcher" class="site" style="display: none;">
+			<h1 class="col-md-9">Researcher overview</h1>
+			<div class="">
+				<div class="col-md-3 text-right h1"><input type="button" class="btn btn-success new" value="add Researcher" data-type="researcher"></div>
+				<div class="col-md-12"><table id="researcherList" class="table table-striped table-hover">
 					<thead>
 						<tr>
 							<th>name</th>
@@ -59,14 +59,14 @@
 					<tbody>
 					
 					</tbody>
-				</table>
+				</table></div>
 			</div>
 		</div>
-		<div id="cont-researchergroups" class="site">
-			<h1>Groups overview</h1>
-			<div class="container">
-				<input type="button" class="btn btn-success new" value="add Group"  data-type="researchergroup" >
-				<table id="researchergroupList" class="table table-striped table-bordered table-hover">
+		<div id="cont-researchergroups" class="site" style="display: none;">
+			<h1 class="col-md-9">Groups overview</h1>
+			<div class="">
+				<div class="col-md-3 text-right h1"><input type="button" class="btn btn-success new" value="add Group" data-type="researchergroup"></div>
+				<div class="col-md-12"><table id="researchergroupList" class="table table-striped table-hover">
 					<thead>
 						<tr>
 							<th>name</th>
@@ -76,7 +76,7 @@
 					<tbody>
 					
 					</tbody>
-				</table>
+				</table></div>
 			</div>
 		</div>
 	</div>
