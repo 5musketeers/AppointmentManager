@@ -88,14 +88,12 @@ public class ResearcherGroupServices {
     @DELETE
     @Path("/{id:[0-9][0-9]*}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response removeById(@PathParam("id") long id) {
     	Response.ResponseBuilder builder = null;
 
         try {
-            // Create an "ok" response
         	registration.remove(id);
-            builder = Response.ok();
+            builder = Response.noContent();
         } catch (Exception e) {
             // Handle generic exceptions
             Map<String, String> responseObj = new HashMap<String, String>();

@@ -42,8 +42,14 @@ var ResearcherGroup = function(data){
 		console.log(self.members);
 		console.log(Researcher.allData);
 		for(var i in self.members){
-			var index = self.members[i];
-			obj.members.push(Researcher.allData[index].toObject());
+			var whatever = self.members[i];
+			// I don't know where this is coming from,
+			// but some times it's the index and sometimes the object itself 
+			if (!isNaN(whatever)) {
+				obj.members.push(Researcher.allData[whatever].toObject());
+			} else if (typeof value !== "undefined") {
+				obj.members.push(whatever.toObject());
+			}
 		}
 		console.log(obj);
 		
