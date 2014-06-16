@@ -27,8 +27,8 @@ var Appointment = function(data){
 					            </div>\
 						        <div class="form-group">\
 						            <label for="start">Start Time:</label>\
-						            <div class="input-group date datetime">\
-						                <input class="form-control"  data-format="dd.MM.yyyy hh:mm" value="'+self.start+'" type="date" name="start" id="start" placeholder="Start Time" required/>\
+						            <div class="input-group date datetime"  data-date-format="MM/DD/YYYY hh:mm">\
+						                <input class="form-control" value="'+self.start+'" type="date" name="start" id="start" placeholder="Start Time" required/>\
 						            	<span class="input-group-addon">\
 						            		<span class="glyphicon glyphicon-calendar"></span>\
 						        		</span>\
@@ -36,8 +36,8 @@ var Appointment = function(data){
 						        </div>\
 						        <div class="form-group">\
 						            <label for="start">End Time:</label>\
-						            <div class="input-group date datetime">\
-						            	<input class="form-control"  data-format="dd.MM.yyyy hh:mm" value="'+self.end+'" type="date" name="end" id="end" placeholder="End Time" required/>\
+						            <div class="input-group date datetime"  data-date-format="MM/DD/YYYY hh:mm">\
+						            	<input class="form-control" value="'+self.end+'" type="date" name="end" id="end" placeholder="End Time" required/>\
 						        		<span class="input-group-addon">\
 						            		<span class="glyphicon glyphicon-calendar"></span>\
 						        		</span>\
@@ -45,7 +45,7 @@ var Appointment = function(data){
 						        </div>\
 						        <div class="form-group">\
 						            <label for="isPrivate">Is Private ?:</label>\
-						            <input class="" type="checkbox" name="isPrivate" id="isPrivate"'+((self.isPrivate)?' checked':'')+' />\
+						            <input class="" type="checkbox" name="isPrivate" id="isPrivate"'+((self.isPrivate == "on")?' checked':'')+' />\
 						        </div>\
 						        <div id="formMsgs"></div>\
 						    </fieldset>\
@@ -75,9 +75,9 @@ var Appointment = function(data){
 		self.id = data['id'] || self.id || false;
 		self.title = data['title'] || self.title || '';
 		self.start = data['start'] || self.start || '';
-		if (self.start.length == 10) {self.start = (new Date(self.start*1000)).toDateString();}
+		if (self.start.length == 10) {intToDate(self.start,"start");}
 		self.end = data['end'] || self.end || '';
-		if (self.end.length == 10) {self.end = (new Date(self.end*1000)).toDateString();}
+		if (self.end.length == 10) {intToDate(self.end,"end");}
 		self.owner = data['owner'] || self.owner || 'test';
 		self.isPrivate = data['isPrivate'] || self.isPrivate || false;
 		self.type = data['type'] || self.type || 'testType';
@@ -85,6 +85,16 @@ var Appointment = function(data){
 		
 		return self;
 	};
+	
+	function intToDate(int,startend) {
+		var date = new Date(int*1000);
+		var month = date.getMonth(); if (month<10) {month = "0"+month;}
+		var day = date.getDate(); if (day<10) {day = "0"+day;}
+		var hour = date.getHours();  if (hour<10) {hour = "0"+hour;}
+		var minute = date.getMinutes();  if (minute<10) {minute = "0"+minute;}
+		if (startend == "start") {self.start = month+"/"+day+"/"+date.getFullYear()+" "+hour+":"+minute;}
+		if (startend == "end") {self.end = month+"/"+day+"/"+date.getFullYear()+" "+hour+":"+minute;}
+	}
 
 	self.save = function(successCB){
 		//New Appointment

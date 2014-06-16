@@ -41,8 +41,8 @@ $(document).ready(function() {
 		}else{
 			data = new classInst({
 				title: 'defaultxy',
-				start: '06/14/2014 12:00 AM',
-				end: '06/14/2014 12:00 AM'
+				start: '06/14/2014 12:00',
+				end: '06/15/2014 12:00'
 			});			
 		}
 		
@@ -70,7 +70,7 @@ $(document).ready(function() {
 		
 		$('.datetime').datetimepicker({
 			language : 'en',
-			pick12HourFormat : true
+			pick24HourFormat : true
 		});
 	});
 

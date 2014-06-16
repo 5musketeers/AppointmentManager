@@ -17,7 +17,7 @@
 
 -- You can use this file to load seed data into the database using SQL statements
 -- insert into Member_html5mobi (id, name, email, phone_number) values (0, 'John Smith', 'john.smith@mailinator.com', '2125551212')
-INSERT INTO Appointment_html5mobi (`id`, `title`, `start`, `end`, `type`, `isPrivate`, `owner`, `location`) VALUES ('1', 'Persistent Appointment', '1421233219', '1421238219', 'initApp', '0', '5musk', 'TUD')
+INSERT INTO Appointment_html5mobi (`id`, `title`, `start`, `end`, `type`, `isPrivate`, `owner`, `location`) VALUES ('1', 'Persistent Appointment', '1423333219', '1423238219', 'initApp', '0', '5musk', 'TUD')
 INSERT INTO Researcher_html5mobi (`id`, `name`, `email`, `password`) VALUES ('1', 'Franz', 'test@test.de', 'test')
 INSERT INTO Researcher_html5mobi (`id`, `name`, `email`, `password`) VALUES ('2', 'Peter', 'test2@test.de', 'test')
 INSERT INTO ResearcherGroup_html5mobi (`id`, `name`) VALUES ('1', '5musketeers')
