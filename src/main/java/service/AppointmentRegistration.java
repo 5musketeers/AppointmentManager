@@ -45,6 +45,7 @@ public class AppointmentRegistration {
         //old.setTitle(app.getTitle());
         //em.merge(old);
         dateToInt(app);
+        em.persist(app);
         appEventSrc.fire(app);
     }
 
