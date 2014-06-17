@@ -28,7 +28,7 @@ var Appointment = function(data){
 						        <div class="form-group">\
 						            <label for="start">Start Time:</label>\
 						            <div class="input-group date datetime"  data-date-format="MM/DD/YYYY hh:mm">\
-						                <input class="form-control" value="'+self.start+'" type="date" name="start" id="start" placeholder="Start Time" required/>\
+						                <input class="form-control" value="'+self.start+'" name="start" id="start" placeholder="Start Time" required/>\
 						            	<span class="input-group-addon">\
 						            		<span class="glyphicon glyphicon-calendar"></span>\
 						        		</span>\
@@ -37,7 +37,7 @@ var Appointment = function(data){
 						        <div class="form-group">\
 						            <label for="start">End Time:</label>\
 						            <div class="input-group date datetime"  data-date-format="MM/DD/YYYY hh:mm">\
-						            	<input class="form-control" value="'+self.end+'" type="date" name="end" id="end" placeholder="End Time" required/>\
+						            	<input class="form-control" value="'+self.end+'" name="end" id="end" placeholder="End Time" required/>\
 						        		<span class="input-group-addon">\
 						            		<span class="glyphicon glyphicon-calendar"></span>\
 						        		</span>\
