@@ -22,6 +22,9 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import model.Appointment;
+import model.Project;
+import model.Researcher;
+import model.ResearcherGroup;
 
 import java.util.logging.Logger;
 
@@ -55,10 +58,31 @@ public class CRUDService<T> {
     }
 
     public void edit(T app) throws Exception {
-        /*log.info("Editiere " + app.getTitle());
-        Appointment old = em.find(Appointment.class, app.getId());
-        old.setTitle(app.getTitle());
-        em.merge(old);*/
+        //log.info("Editiere " + app.getTitle());
+    	if (app.getClass().equals(Researcher.class)) {
+    		Researcher temp = (Researcher)app;
+    		Researcher old = em.find(Researcher.class, temp.getId());
+    		old.setName(temp.getName());
+    		old.setEmail(temp.getEmail());
+    		old.setPassword(temp.getPassword());
+    		em.merge(old);
+    	}
+    	if (app.getClass().equals(ResearcherGroup.class)) {
+    		ResearcherGroup temp = (ResearcherGroup)app;
+    		ResearcherGroup old = em.find(ResearcherGroup.class, temp.getId());
+    		old.setName(temp.getName());
+    		old.setMembers(temp.getMembers());
+    		em.merge(old);
+    	}
+    	if (app.getClass().equals(Project.class)) {
+    		Project temp = (Project)app;
+    		Project old = em.find(Project.class, temp.getId());
+    		old.setName(temp.getName());
+    		old.setMembers(temp.getMembers());
+    		em.merge(old);
+    	}
+        
+        //old.setTitle(app.getTitle());
     	
         //appEventSrc.fire(old);
         
