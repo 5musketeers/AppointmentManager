@@ -28,6 +28,78 @@ $(document).ready(function() {
 		});
 	});
 	
+	 $('#calendar').fullCalendar({
+        events: function(start, end, timezone, callback){
+        	$.ajax({
+        		url: "rest/appointments",
+        		cache: false,
+        		success: function(data) {
+        			var events = [];
+        			var id = 1;
+        			for(var d in data){
+        				var app = new Appointment(data[d]);
+        				
+        				events.push({
+        					'id': app.id,
+        					'title': app.title,
+        					'start': app.start,
+        					'end': app.end
+        				});
+        				id++;
+        			}
+        			console.log("update");
+        			callback(events);
+        		},
+        		error: function(error) {
+        			console.log("error updating table -" + error.status);
+        		}
+        	});
+        },
+		// eventSources : ["rest/appointments"],
+        eventClick: function(event){
+        	var data = Appointment.allData[event.id];
+        	bootbox.dialog({
+    			message : data.getHtml('form'),
+    			title : "appointment",
+    			closeButton: true,
+    			buttons : {
+
+					'delete' : {
+						label : "delete",
+						className : "btn-danger",
+						callback : function() {
+							data.updateFrom($('.bootbox.modal').find('form').serializeObject());
+							bootbox.confirm("are you sure?", function(){
+								data.remove(function(){
+									location.reload();
+								});								
+							});
+							return false;
+						}
+					},
+					save : {
+    					label : "Save",
+    					className : "btn-success",
+    					callback : function() {
+    						data.updateFrom($('.bootbox.modal').find('form').serializeObject());
+    						data.save(function() {
+    							console.log('SAVED SUCCESSFULL');
+    							bootbox.hideAll();
+    		        			window.location.reload();
+    						});
+    						return false;
+    					}
+    				}
+    			}
+    		});
+    		
+    		$('.datetime').datetimepicker({
+    			language : 'en',
+    			pick24HourFormat : true
+    		});
+        }
+    });
+	
 	$(document).on('click', '.edit,.new', function() {
 		
 		var className = $(this).data('type');
@@ -61,6 +133,7 @@ $(document).ready(function() {
 							console.log('SAVED SUCCESSFULL');
 							classInst.list($('#'+className+'List'));
 							bootbox.hideAll();
+		        			//window.location.reload();
 						});
 						return false;
 					}

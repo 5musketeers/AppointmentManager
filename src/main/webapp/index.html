@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="css/libs/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/libs/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" href="jcalendar/fullcalendar.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -26,7 +27,9 @@
 			<h1 class="col-md-9">Appointment overview</h1>
 			<div class="">
 				<div class="col-md-3 text-right h1"><input type="button" class="btn btn-success new" value="add Appointment" data-type="appointment"></div>
-				<div class="col-md-12"><table id="appointmentList" class="table table-striped table-hover">
+				
+				<div id="calendar"></div>
+				<div class="col-md-12"><table id="appointmentList" class="table table-striped table-hover" style="display: none">
 					<thead>
 						<tr>
 							<th>title</th>
@@ -107,6 +110,7 @@
     <script type="text/javascript" src="js/libs/moment.js"></script>
     <script type="text/javascript" src="js/libs/modernizr-2.6.2.min.js"></script>
     <script type="text/javascript" src="js/libs/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="jcalendar/fullcalendar.js"></script>
     
     <script type="text/javascript" src="js/model/Appointment.js"></script>
     <script type="text/javascript" src="js/model/Researcher.js"></script>

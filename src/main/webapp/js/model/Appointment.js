@@ -166,3 +166,35 @@ Appointment.list = function(tableToAppend, template){
         }
     });
 };
+
+Appointment.calendar = function(){
+	$.ajax({
+		url: "rest/appointments",
+		cache: false,
+		success: function(data) {
+			var events = [];
+			var id = 1;
+			for(var d in data){
+				var app = new Appointment(data[d]);
+				
+				events.push({
+					'id': app.id,
+					'title': app.title,
+					'start': app.start,
+					'end': app.end
+				});
+				id++;
+			}
+			console.log("update");
+			$('#calendar').fullCalendar("events", events);
+			/*$('#calendar').fullCalendar({
+		        events: events
+			});*/
+			
+		},
+		error: function(error) {
+			console.log("error updating table -" + error.status);
+		}
+	});
+};
+
