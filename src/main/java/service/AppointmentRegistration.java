@@ -59,6 +59,7 @@ public class AppointmentRegistration {
         old.setType(app.getType());
         old.setLocation(app.getLocation());
         old.setIsPrivate(app.getIsPrivate());
+        old.setMembers(app.getMembers());
         em.merge(old);
         //appEventSrc.fire(old);
         

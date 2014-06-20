@@ -47,6 +47,16 @@ var Appointment = function(data){
 						            <label for="isPrivate">Is Private ?:</label>\
 						            <input class="" type="checkbox" name="isPrivate" id="isPrivate"'+((self.isPrivate == "on")?' checked':'')+' />\
 						        </div>\
+						        <div class="form-group">\
+					            <label for="name">Members:</label>\
+					            <select name="members" size="3" multiple>\
+					            	'+Researcher.getHtml('empty', 'option', function(researcher){
+					            		return {
+					            			selected: (typeof self.membersByIds[researcher.id] !== 'undefined')
+					            		};
+					            	})+'\
+					            </select>\
+				            </div>\
 						        <div id="formMsgs"></div>\
 						    </fieldset>\
 						</form>'
@@ -67,6 +77,18 @@ var Appointment = function(data){
 		obj.type = self.type;
 		obj.location = self.location;
 		
+		obj.members = [];
+		for(var i in self.members){
+			var whatever = self.members[i];
+			// I don't know where this is coming from,
+			// but some times it's the index and sometimes the object itself 
+			if (!isNaN(whatever)) {
+				obj.members.push(Researcher.allData[whatever].toObject());
+			} else if (typeof whatever !== "undefined") {
+				obj.members.push(whatever.toObject());
+			}
+		}
+		
 		return obj;
 	};
 	
@@ -82,7 +104,13 @@ var Appointment = function(data){
 		self.isPrivate = data['isPrivate'] || self.isPrivate || false;
 		self.type = data['type'] || self.type || 'testType';
 		self.location = data['location'] || self.location || 'testLoc';
+		self.members = data['members'] || self.members || [];
 		
+		self.membersByIds = {};
+		for(var i in self.members){
+			var id = self.members[i].id;
+			self.membersByIds[id] = self.members[i];
+		}
 		return self;
 	};
 	
