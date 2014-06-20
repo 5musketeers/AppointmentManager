@@ -133,6 +133,9 @@ $(document).ready(function() {
 							console.log('SAVED SUCCESSFULL');
 							classInst.list($('#'+className+'List'));
 							bootbox.hideAll();
+							if(className == 'appointment'){
+								window.location.reload();
+							}
 		        			//window.location.reload();
 						});
 						return false;
